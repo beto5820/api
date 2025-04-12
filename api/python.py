@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+import random
 
 app = FastAPI()
 
@@ -13,3 +15,26 @@ def produto():
         "preço": "R$ 99,90",
         "descrição": "Esse produto é ótimo pra quem quer praticidade e qualidade!"
     }
+
+@app.get("/vender")
+def vender(link: str):
+    frases_iniciais = [
+        "🚀 Promoção exclusiva!",
+        "🔥 Não perca essa chance!",
+        "🎯 Produto com qualidade e preço justo!",
+        "💥 Oferta imperdível só hoje!",
+    ]
+
+    gatilhos = [
+        "✅ Frete grátis para todo Brasil!",
+        "🛡️ Compra segura com garantia de 7 dias.",
+        "💳 Parcele em até 12x no cartão!",
+        "📦 Entrega rápida e segura!"
+    ]
+
+    texto = f"""{random.choice(frases_iniciais)}\n
+Confira esse produto incrível:\n
+👉 {link}\n
+{random.choice(gatilhos)}"""
+
+    return {"texto": texto}
