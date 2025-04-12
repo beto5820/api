@@ -1,21 +1,3 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-import random
-
-app = FastAPI()
-
-@app.get("/")
-def home():
-    return {"mensagem": "A API do Beto está online!"}
-
-@app.get("/produto")
-def produto():
-    return {
-        "nome": "Produto Top",
-        "preço": "R$ 99,90",
-        "descrição": "Esse produto é ótimo pra quem quer praticidade e qualidade!"
-    }
-
 @app.get("/vender")
 def vender(link: str):
     frases_iniciais = [
@@ -37,4 +19,10 @@ Confira esse produto incrível:\n
 👉 {link}\n
 {random.choice(gatilhos)}"""
 
-    return {"texto": texto}
+    # Simulação de imagem com IA (você vai trocar isso depois por uma real)
+    imagem_url = "https://via.placeholder.com/600x400.png?text=Imagem+do+Produto"
+
+    return {
+        "texto": texto,
+        "imagem_url": imagem_url
+    }
