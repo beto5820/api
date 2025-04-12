@@ -8,18 +8,19 @@ app = FastAPI()
 
 @app.get("/")
 def home():
-    return {"mensagem": "A API do Beto está online!"}
+    return {"mensagem": "🚀 A API do Beto está online e vendendo!"}
 
 def extrair_nome_do_produto(link):
     try:
         headers = {"User-Agent": "Mozilla/5.0"}
-        resposta = requests.get(link, headers=headers)
+        resposta = requests.get(link, headers=headers, timeout=10)
         soup = BeautifulSoup(resposta.text, "html.parser")
         titulo = soup.find("title")
         if titulo:
-            return titulo.text.split("|")[0].strip()
+            nome = titulo.text.split("|")[0].strip()
+            return nome if len(nome) < 100 else nome[:97] + "..."
         return "Produto Incrível"
-    except:
+    except Exception as e:
         return "Produto Incrível"
 
 @app.get("/vender")
@@ -27,25 +28,25 @@ def vender(link: str):
     nome_produto = extrair_nome_do_produto(link)
 
     frases_iniciais = [
-        "🚀 Promoção exclusiva!",
-        "🔥 Não perca essa chance!",
-        "🎯 Produto com qualidade e preço justo!",
-        "💥 Oferta imperdível só hoje!",
+        "🔥 Oferta especial que vai acabar rápido!",
+        "🚀 Promoção imperdível do dia!",
+        "🎯 Chegou o produto que você procurava!",
+        "💥 Desconto exclusivo para você!",
     ]
 
     gatilhos = [
         "✅ Frete grátis para todo Brasil!",
-        "🛡️ Compra segura com garantia de 7 dias.",
-        "💳 Parcele em até 12x no cartão!",
+        "🛡️ Compra protegida com garantia de 7 dias.",
+        "💳 Parcele em até 12x sem juros!",
         "📦 Entrega rápida e segura!",
     ]
 
-    texto = f"""{random.choice(frases_iniciais)}\n\n{nome_produto}\n\n👉 {link}\n\n{random.choice(gatilhos)}"""
+    texto_pronto = f"""{random.choice(frases_iniciais)}\n\n{nome_produto}\n\n👉 {link}\n\n{random.choice(gatilhos)}"""
 
-    imagem_url = "https://via.placeholder.com/600x400.png?text=" + nome_produto.replace(" ", "+")
+    imagem_url = f"https://via.placeholder.com/600x400.png?text={nome_produto.replace(' ', '+')}"
 
     return {
         "nome": nome_produto,
-        "texto": texto,
+        "texto": texto_pronto,
         "imagem_url": imagem_url
     }
